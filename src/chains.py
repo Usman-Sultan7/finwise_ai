@@ -2,13 +2,15 @@ import os
 from langchain_openai import ChatOpenAI
 from src.prompts import finwise_prompt, JSON_SCHEMA
 
-def get_llm():
+# 1. Add api_key as a required parameter
+def get_llm(api_key: str): 
     """Initializes and returns the ChatOpenAI model."""
     return ChatOpenAI(
-        temperature=0.2, # Low temperature for analytical consistency
+        temperature=0.2, 
         model_name="gpt-4o-mini",
-        api_key=os.getenv("OPENAI_API_KEY"),
-        streaming=True # Crucial for the st.write_stream requirement
+        # 2. Pass the dynamic key instead of os.getenv
+        api_key=api_key, 
+        streaming=True 
     )
 
 def get_financial_chain():

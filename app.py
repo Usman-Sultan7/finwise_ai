@@ -12,6 +12,7 @@ def display_disclaimer():
     """Displays the mandatory educational disclaimer."""
     st.warning("**EDUCATIONAL USE ONLY:** FinWise AI is an educational prototype. It does not provide guaranteed investment advice, execute financial transactions, or claim that any financial outcome is guaranteed. This is for informational purposes only. Please consult a qualified financial professional.")
 
+
 # 2. Sidebar Setup
 with st.sidebar:
     st.title("📈 FinWise AI")
@@ -19,15 +20,15 @@ with st.sidebar:
     display_disclaimer()
     
     st.divider()
+    # Add the API key input here
+    user_api_key = st.text_input(
+        "OpenAI API Key", 
+        type="password", 
+        help="Enter your API key to generate financial analysis."
+    )
+    
     cache_option = st.radio("Cache Strategy", ["Memory (Fastest)", "SQLite (Persistent)"])
-    if cache_option.startswith("Memory"):
-        configure_llm_cache("memory")
-    else:
-        configure_llm_cache("sqlite")
-        
-    if st.button("Reset Session"):
-        st.session_state.clear()
-        st.rerun()
+    # ... rest of your sidebar code
 
 # 3. Main Dashboard UI
 st.title("Financial Analysis Dashboard")
@@ -66,6 +67,11 @@ with st.form("financial_form"):
 
 # 4. Processing and Output
 if submitted:
+    # 1. Validation to stop execution if the key is missing
+    if not user_api_key:
+        st.error("Please enter your OpenAI API Key in the sidebar before analyzing finances.")
+        st.stop()
+
     expenses_dict = {
         "Housing/Rent": ex_housing, "Food": ex_food, "Transportation": ex_transport,
         "Utilities": ex_utilities, "Education": ex_edu, "Healthcare": ex_health,
@@ -86,7 +92,7 @@ if submitted:
     m3.metric("Remaining Income", f"{calcs['remaining_income']:,.2f}")
     m4.metric("Savings Ratio", f"{calcs['savings_ratio']}%")
     
-    # Prepare LLM Inputs
+    # THIS WAS MISSING: Prepare LLM Inputs
     expense_breakdown_str = "\n".join([f"{k}: {v}" for k, v in expenses_dict.items()])
     llm_inputs = {
         "monthly_income": monthly_income,
@@ -102,8 +108,10 @@ if submitted:
     st.divider()
     st.subheader("2. AI Analysis Generation")
     
+    # Pass the user's key into your function
+    llm = get_llm(user_api_key)
+    
     # Stream the raw generation 
-    llm = get_llm()
     with st.expander("View Raw AI Streaming Data", expanded=True):
         st.write("Streaming AI insights...")
         raw_response = st.write_stream(stream_recommendations(llm, llm_inputs))
