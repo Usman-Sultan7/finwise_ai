@@ -1,1 +1,1 @@
-https://finwiseai-cptnmrplsuy342e46gxxxv.streamlit.app/
+https://fin-wise-ai0.streamlit.app/
