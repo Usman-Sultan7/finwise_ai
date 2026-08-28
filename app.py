@@ -29,6 +29,9 @@ with st.sidebar:
     
     cache_option = st.radio("Cache Strategy", ["Memory (Fastest)", "SQLite (Persistent)"])
     # ... rest of your sidebar code
+if not user_api_key:
+    st.info("👈 Please enter your OpenAI API Key in the sidebar to access the dashboard.")
+    st.stop()
 
 # 3. Main Dashboard UI
 st.title("Financial Analysis Dashboard")
