@@ -44,27 +44,27 @@ with st.form("financial_form"):
     col1, col2 = st.columns(2)
     with col1:
         currency = st.selectbox("Currency", CURRENCIES)
-        monthly_income = st.number_input("Monthly Income", min_value=0.0, value=5000.0, step=100.0)
-        current_savings = st.number_input("Current Monthly Savings", min_value=0.0, value=1000.0, step=100.0)
+        monthly_income = st.number_input("Monthly Income", min_value=0, value=5000, step=100)
+        current_savings = st.number_input("Current Monthly Savings", min_value=0, value=1000, step=100)
         financial_goal = st.selectbox("Primary Financial Goal", GOALS)
         
     with col2:
         st.markdown("**Monthly Expenses**")
-        ex_housing = st.number_input("Housing / Rent", min_value=0.0, value=1500.0)
-        ex_food = st.number_input("Food", min_value=0.0, value=600.0)
-        ex_transport = st.number_input("Transportation", min_value=0.0, value=300.0)
-        ex_utilities = st.number_input("Utilities", min_value=0.0, value=200.0)
+        ex_housing = st.number_input("Housing / Rent", min_value=0, value=1500)
+        ex_food = st.number_input("Food", min_value=0, value=600)
+        ex_transport = st.number_input("Transportation", min_value=0, value=300)
+        ex_utilities = st.number_input("Utilities", min_value=0, value=200)
         
     with st.expander("Additional Expense Categories"):
         col3, col4 = st.columns(2)
         with col3:
-            ex_edu = st.number_input("Education", min_value=0.0, value=0.0)
-            ex_health = st.number_input("Healthcare", min_value=0.0, value=100.0)
-            ex_debt = st.number_input("Loan / Debt Payments", min_value=0.0, value=400.0)
+            ex_edu = st.number_input("Education", min_value=0, value=0)
+            ex_health = st.number_input("Healthcare", min_value=0, value=100)
+            ex_debt = st.number_input("Loan / Debt Payments", min_value=0, value=400)
         with col4:
-            ex_entertainment = st.number_input("Entertainment", min_value=0.0, value=150.0)
-            ex_personal = st.number_input("Personal Care", min_value=0.0, value=50.0)
-            ex_other = st.number_input("Other", min_value=0.0, value=100.0)
+            ex_entertainment = st.number_input("Entertainment", min_value=0, value=150)
+            ex_personal = st.number_input("Personal Care", min_value=0, value=50)
+            ex_other = st.number_input("Other", min_value=0, value=100)
 
     submitted = st.form_submit_button("Analyze Finances")
 
