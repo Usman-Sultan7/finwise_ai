@@ -91,8 +91,8 @@ with st.form("financial_form"):
     col1, col2 = st.columns(2)
     with col1:
         currency = st.selectbox("Currency", CURRENCIES)
-        monthly_income = st.number_input("Monthly Income", min_value=0, value=5000, step=100)
-        current_savings = st.number_input("Current Monthly Savings", min_value=0, value=1000, step=100)
+        monthly_income = st.number_input("Monthly Income", min_value=0, value=0, step=100)
+        current_savings = st.number_input("Current Monthly Savings", min_value=0, value=0, step=100)
         financial_goal = st.selectbox("Primary Financial Goal", GOALS)
         
     with col2:
