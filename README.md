@@ -1,1 +1,1 @@
-https://fin-wise-ai-1.streamlit.app/
+https://fin-wise-ai-2.streamlit.app/
