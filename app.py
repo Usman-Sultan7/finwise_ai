@@ -50,21 +50,21 @@ with st.form("financial_form"):
         
     with col2:
         st.markdown("**Monthly Expenses**")
-        ex_housing = st.number_input("Housing / Rent", min_value=0, value=1500)
-        ex_food = st.number_input("Food", min_value=0, value=600)
-        ex_transport = st.number_input("Transportation", min_value=0, value=300)
-        ex_utilities = st.number_input("Utilities", min_value=0, value=200)
+        ex_housing = st.number_input("Housing / Rent", min_value=0, value=0)
+        ex_food = st.number_input("Food", min_value=0, value=0)
+        ex_transport = st.number_input("Transportation", min_value=0, value=0)
+        ex_utilities = st.number_input("Utilities", min_value=0, value=0)
         
     with st.expander("Additional Expense Categories"):
         col3, col4 = st.columns(2)
         with col3:
             ex_edu = st.number_input("Education", min_value=0, value=0)
-            ex_health = st.number_input("Healthcare", min_value=0, value=100)
-            ex_debt = st.number_input("Loan / Debt Payments", min_value=0, value=400)
+            ex_health = st.number_input("Healthcare", min_value=0, value=0)
+            ex_debt = st.number_input("Loan / Debt Payments", min_value=0, value=0)
         with col4:
-            ex_entertainment = st.number_input("Entertainment", min_value=0, value=150)
-            ex_personal = st.number_input("Personal Care", min_value=0, value=50)
-            ex_other = st.number_input("Other", min_value=0, value=100)
+            ex_entertainment = st.number_input("Entertainment", min_value=0, value=0)
+            ex_personal = st.number_input("Personal Care", min_value=0, value=0)
+            ex_other = st.number_input("Other", min_value=0, value=0)
 
     submitted = st.form_submit_button("Analyze Finances")
 
