@@ -5,12 +5,66 @@ from src.chains import get_llm, stream_recommendations
 from src.cache_manager import configure_llm_cache
 from src.utils import parse_llm_json
 
-# 1. Page Configuration
-st.set_page_config(page_title="FinWise AI", page_icon="📈", layout="wide")
+import streamlit as st
 
-def display_disclaimer():
-    """Displays the mandatory educational disclaimer."""
-    st.warning("**EDUCATIONAL USE ONLY:** FinWise AI is an educational prototype. It does not provide guaranteed investment advice, execute financial transactions, or claim that any financial outcome is guaranteed. This is for informational purposes only. Please consult a qualified financial professional.")
+# 1. Check if the user has already entered their API key in this session
+if 'api_key_entered' not in st.session_state:
+    st.session_state.api_key_entered = False
+
+if not st.session_state.api_key_entered:
+    # --- BEAUTIFUL AUTHENTICATION SCREEN ---
+    
+    # Center-aligned headers using HTML/Markdown
+    st.markdown(
+        """
+        <h1 style='text-align: center;'>🩺 MediGuide AI</h1>
+        <p style='text-align: center; color: #666666; font-size: 18px;'>
+            AI-Powered Medical Symptom Assessment & Patient Guidance
+        </p>
+        <br><br>
+        """, 
+        unsafe_allow_html=True
+    )
+    
+    # Use columns to create a centered "card" in the middle of the screen
+    # The ratio [1, 1.5, 1] means the middle column is slightly wider than the edges
+    left_spacer, center_column, right_spacer = st.columns([1, 1.5, 1])
+    
+    with center_column:
+        st.markdown("### 🔐 Enter OpenAI API Key")
+        
+        # The input field
+        user_key = st.text_input(
+            label="OpenAI API Key",
+            type="password",
+            placeholder="sk-...",
+            label_visibility="collapsed" # Hides the small label since we have the big heading
+        )
+        
+        st.caption("Your API key is used strictly for this session and is not saved.")
+        
+        # The prominent continue button
+        if st.button("Continue ➔", type="primary", use_container_width=True):
+            if user_key.startswith("sk-"): # Basic validation
+                st.session_state.api_key = user_key
+                st.session_state.api_key_entered = True
+                st.rerun() # Instantly refresh the page to show the main app
+            else:
+                st.error("Please enter a valid OpenAI API key (starts with 'sk-').")
+                
+    # Stop the rest of the app from running until this screen is passed
+    st.stop()
+
+# ==========================================
+# --- MAIN DASHBOARD INTERFACE GOES HERE ---
+# ==========================================
+# (Everything below this line only runs AFTER they click Continue)
+
+# You can access the key anywhere below using: st.session_state.api_key
+
+st.sidebar.title("MediGuide Settings")
+st.sidebar.success("API Key Provided!")
+# ... the rest of your app code ...
 
 
 # 2. Sidebar Setup
