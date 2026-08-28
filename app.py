@@ -5,30 +5,70 @@ from src.chains import get_llm, stream_recommendations
 from src.cache_manager import configure_llm_cache
 from src.utils import parse_llm_json
 
-# 1. Page Configuration
-st.set_page_config(page_title="FinWise AI", page_icon="📈", layout="wide")
+import streamlit as st
 
-def display_disclaimer():
-    """Displays the mandatory educational disclaimer."""
-    st.warning("**EDUCATIONAL USE ONLY:** FinWise AI is an educational prototype. It does not provide guaranteed investment advice, execute financial transactions, or claim that any financial outcome is guaranteed. This is for informational purposes only. Please consult a qualified financial professional.")
+# 1. Check if the user has already entered their API key in this session
+if 'api_key_entered' not in st.session_state:
+    st.session_state.api_key_entered = False
 
-
-# 2. Sidebar Setup
-with st.sidebar:
-    st.title("📈 FinWise AI")
-    st.markdown("AI-Powered Personal Financial Analysis and Smart Budget Assistant")
-    display_disclaimer()
+if not st.session_state.api_key_entered:
+    # --- BEAUTIFUL AUTHENTICATION SCREEN FOR FINWISE ---
     
-    st.divider()
-    # Add the API key input here
-    user_api_key = st.text_input(
-        "OpenAI API Key", 
-        type="password", 
-        help="Enter your API key to generate financial analysis."
+    # Center-aligned headers for FinWise
+    st.markdown(
+        """
+        <h1 style='text-align: center;'>📈 FinWise AI</h1>
+        <p style='text-align: center; color: #666666; font-size: 18px;'>
+            AI-Powered Personal Financial Analysis and Smart Budget Assistant
+        </p>
+        <br><br>
+        """, 
+        unsafe_allow_html=True
     )
     
+    left_spacer, center_column, right_spacer = st.columns([1, 1.5, 1])
+    
+    with center_column:
+        st.markdown("### 🔐 Enter OpenAI API Key")
+        
+        # The input field
+        user_key = st.text_input(
+            label="OpenAI API Key",
+            type="password",
+            placeholder="sk-...",
+            label_visibility="collapsed"
+        )
+        
+        st.caption("Your API key is used strictly for this session and is not saved.")
+        
+        # The continue button
+        if st.button("Continue ➔", type="primary", use_container_width=True):
+            if user_key.startswith("sk-"): 
+                # Save it as 'user_api_key' to match your FinWise code
+                st.session_state.user_api_key = user_key 
+                st.session_state.api_key_entered = True
+                st.rerun() 
+            else:
+                st.error("Please enter a valid OpenAI API key (starts with 'sk-').")
+                
+    # Stop the rest of the app from running until this screen is passed
+    st.stop()
+
+# ==========================================
+# --- MAIN FINWISE DASHBOARD STARTS HERE ---
+# ==========================================
+
+
+with st.sidebar:
+    st.title("📈 FinWise AI")
+    # ... your markdown and disclaimers ...
+    
+    st.divider()
+    
+    # REPLACED LINE: Pull the key directly from the landing page
+    user_api_key = st.session_state.user_api_key
+    
     cache_option = st.radio("Cache Strategy", ["Memory (Fastest)", "SQLite (Persistent)"])
-    # ... rest of your sidebar code
 if not user_api_key:
     st.info("👈 Please enter your OpenAI API Key in the sidebar to access the dashboard.")
     st.stop()
