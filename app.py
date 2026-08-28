@@ -1,11 +1,18 @@
 import streamlit as st
+
+
 from src.config import GOALS, CURRENCIES
 from src.financial_calculator import calculate_financials
 from src.chains import get_llm, stream_recommendations
 from src.cache_manager import configure_llm_cache
 from src.utils import parse_llm_json
+def display_disclaimer():
+ st.warning("**EDUCATIONAL USE ONLY:** FinWise AI is an educational prototype. It does not provide guaranteed investment advice, execute financial transactions, or claim that any financial outcome is guaranteed. This is for informational purposes only. Please consult a qualified financial professional.")
 
-import streamlit as st
+
+# (and any other imports you had before)
+
+# ... then your api_key_entered check starts here ...
 
 # 1. Check if the user has already entered their API key in this session
 if 'api_key_entered' not in st.session_state:
